@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel EDA & Gráficos Interativos — Roubo de Veículos MRJ | Caio Silva Lopes</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #162032;
+  --bg-code: #0b1120;
+  --text-primary: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent-blue: #38bdf8;
+  --accent-blue-dark: #0284c7;
+  --accent-orange: #f97316;
+  --accent-orange-light: #fb923c;
+  --border-color: #334155;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  padding-bottom: 4rem;
+}
+
+/* Global Navigation Bar (BEM) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-blue-dark);
+  padding: 0.85rem 1.5rem;
+}
+
+.navbar__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar__brand-badge {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.navbar__link--active {
+  color: var(--text-primary);
+  background-color: rgba(249, 115, 22, 0.18);
+  border-color: var(--accent-orange);
+}
+
+/* Hero Header */
+.hero {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border-bottom: 3px solid var(--accent-orange);
+  padding: 3rem 1.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--blue {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.badge--orange {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+}
+
+.hero__title {
+  font-size: 2.15rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  max-width: 920px;
+}
+
+.hero__meta {
+  background-color: rgba(15, 23, 42, 0.65);
+  border-left: 4px solid var(--accent-blue);
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__meta strong {
+  color: var(--text-primary);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-orange);
+}
+
+.btn--secondary {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Main Container */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Portal Hub Navigation Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-blue);
+}
+
+.portal-card__tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-orange);
+  margin-bottom: 0.45rem;
+}
+
+.portal-card__title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.portal-card__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.portal-card__link {
+  display: inline-block;
+  text-align: center;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  transition: all 0.2s ease;
+}
+
+.portal-card--orange .portal-card__link {
+  color: var(--text-primary);
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__link:hover {
+  opacity: 0.9;
+}
+
+/* Content Sections */
+.section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section__title {
+  font-size: 1.45rem;
+  color: var(--accent-blue);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.section__subtitle {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.keywords {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.keywords strong {
+  color: var(--accent-orange);
+}
+
+.rq-list {
+  list-style: none;
+  margin: 1rem 0;
+}
+
+.rq-list__item {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  border-radius: 0 6px 6px 0;
+}
+
+.rq-list__label {
+  color: var(--accent-orange);
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+pre {
+  background-color: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin: 1rem 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
+
+pre code {
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.75rem 0.95rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+tr:hover {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+.chart-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.chart-box__img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-box__caption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.kpi-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.kpi-card__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.35rem 0;
+}
+
+.kpi-card__sub {
+  font-size: 0.82rem;
+  color: var(--accent-blue);
+}
+
+.kpi-card--orange .kpi-card__sub {
+  color: var(--accent-orange-light);
+}
+
+.ref-list {
+  padding-left: 1.35rem;
+}
+
+.ref-list li {
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer {
+  max-width: 1140px;
+  margin: 2rem auto 0;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 1.6rem;
+  }
+  .section {
+    padding: 1.35rem;
+  }
+}
+
+/* Portal Hub Specific Styles (BEM - White, Blue & Orange Palette) */
+.hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hub-header__title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+}
+
+.hub-header__subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.portal-grid--main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.35rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.18);
+}
+
+.portal-card--orange:hover {
+  border-color: var(--accent-orange);
+  box-shadow: 0 12px 28px rgba(249, 115, 22, 0.18);
+}
+
+.portal-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.portal-card__step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background-color: rgba(56, 189, 248, 0.14);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.portal-card--orange .portal-card__step {
+  background-color: rgba(249, 115, 22, 0.14);
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__list {
+  list-style: none;
+  margin: 0 0 1.35rem 0;
+  padding: 0;
+}
+
+.portal-card__list-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.28rem 0;
+  border-bottom: 1px dashed rgba(51, 65, 85, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.portal-card__bullet {
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.quick-link-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.quick-link-item--orange {
+  border-left-color: var(--accent-orange);
+}
+
+.quick-link-item:hover {
+  border-color: var(--accent-orange);
+  background-color: rgba(56, 189, 248, 0.08);
+}
+
+.quick-link-item__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.quick-link-item--orange .quick-link-item__title {
+  color: var(--accent-orange);
+}
+
+.quick-link-item__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__brand-badge">LP6 • G2</span>
+        <span>Portal de Ciência Aberta — Roubo de Veículos MRJ</span>
+      </a>
+      <ul class="navbar__menu">
+        <li><a href="index.html" class="navbar__link">Portal Principal</a></li>
+        <li><a href="artigo.html" class="navbar__link">Artigo Científico</a></li>
+        <li><a href="exploratoria.html" class="navbar__link navbar__link--active">Painel EDA & Gráficos</a></li>
+        <li><a href="dicionario.html" class="navbar__link">Dicionário & FAIR</a></li>
+        <li><a href="pipeline.html" class="navbar__link">Pipeline ETL & Auditoria</a></li>
+        <li><a href="https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git" target="_blank" rel="noopener" class="navbar__link">Repositório GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__container">
+      <div class="hero__badges">
+        <span class="badge badge--orange">Módulo 02 • Análise Exploratória (EDA)</span>
+        <span class="badge badge--blue">Visualização Interativa Plotly.js</span>
+        <span class="badge badge--orange">Estatística Descritiva &amp; Ciclos</span>
+      </div>
+      <h1 class="hero__title">Painel de Análise Exploratória de Dados (EDA) e Visualização Analítica</h1>
+      <p class="hero__subtitle">Inspeção detalhada das distribuições, medidas de tendência central e dispersão, agrupamento por ciclos históricos de segurança pública e série integral tratada (2003–2022).</p>
+      <div class="hero__actions">
+        <a href="index.html" class="btn btn--secondary">← Voltar ao Portal Principal</a>
+        <a href="dicionario.html" class="btn btn--primary">Avançar para Dicionário &amp; FAIR →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2 class="section__title">1. Síntese por Ciclos Plurianuais de Segurança Pública no MRJ</h2>
+      <p>A segmentação histórica permite contrastar os patamares médios e a volatilidade de cada período político-operacional da segurança pública no Município do Rio de Janeiro:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Ciclo Histórico (1º Quadrimestre)</th>
+              <th>Anos (N)</th>
+              <th>Média de Roubos</th>
+              <th>Mediana de Roubos</th>
+              <th>Desvio Padrão</th>
+              <th>Taxa Média / 100k hab.</th>
+              <th>Média Mensal (Jan–Abr)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>2003–2007: Patamar Elevado Inicial</strong></td>
+              <td>5</td>
+              <td>8.238,60</td>
+              <td>8.215,00</td>
+              <td>426,88</td>
+              <td>136,24</td>
+              <td>2.059,65</td>
+            </tr>
+            <tr>
+              <td><strong>2008–2013: Retração Consistente (Ciclo UPP)</strong></td>
+              <td>6</td>
+              <td>4.512,50</td>
+              <td>4.175,50</td>
+              <td>1.225,16</td>
+              <td>71,56</td>
+              <td>1.128,12</td>
+            </tr>
+            <tr>
+              <td><strong>2014–2018: Crise Fiscal e Escalada Crítica</strong></td>
+              <td>5</td>
+              <td>7.030,20</td>
+              <td>6.304,00</td>
+              <td>2.029,72</td>
+              <td>107,66</td>
+              <td>1.757,55</td>
+            </tr>
+            <tr>
+              <td><strong>2019–2022: Queda Pós-Intervenção e Pandemia</strong></td>
+              <td>4</td>
+              <td>5.226,75</td>
+              <td>4.810,00</td>
+              <td>1.270,94</td>
+              <td>77,30</td>
+              <td>1.306,69</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">2. Visualizações Interativas e Estáticas das Questões de Pesquisa (RQ1, RQ2 e RQ3)</h2>
+      <div class="chart-box">
+        <div id="chart-trend" style="width:100%;height:430px;"></div>
+        <div class="chart-box__caption">Gráfico Interativo 1 (RQ1): Evolução do Total no 1º Quadrimestre vs. Taxa por 100 mil habitantes (2003–2022).</div>
+      </div>
+
+      <div class="chart-box">
+        <div id="chart-variation" style="width:100%;height:390px;"></div>
+        <div class="chart-box__caption">Gráfico Interativo 2 (RQ2): Choques de variação percentual anual (%) entre 2004 e 2022.</div>
+      </div>
+
+      <div class="chart-box">
+        <div id="chart-rq3" style="width:100%;height:420px;"></div>
+        <div class="chart-box__caption">Gráfico Interativo 3 (RQ3): Dispersão entre População Projetada e Total de Roubos com regressão linear OLS ($r = -0,3742$).</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">3. Base de Dados Histórica Completa Higienizada (2003–2022)</h2>
+      <p>Registros extraídos e validados pelo módulo <code>src/etl.py</code> a partir da Tabela 2306 (ISP-RJ / DATA.RIO):</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Ano</th>
+              <th>Total (Jan–Abr)</th>
+              <th>Dif. Absoluta</th>
+              <th>Dif. Percentual (%)</th>
+              <th>População Estimada</th>
+              <th>Taxa / 100k hab.</th>
+              <th>Média Mensal</th>
+              <th>Ciclo Histórico Classificado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>2003</strong></td>
+              <td>8.558</td>
+              <td>— (Base)</td>
+              <td>— (Base)</td>
+              <td>5.865.737,42</td>
+              <td>145,90</td>
+              <td>2.139,50</td>
+              <td>2003-2007: Patamar Elevado Inicial</td>
+            </tr>
+            <tr>
+              <td><strong>2004</strong></td>
+              <td>7.680</td>
+              <td>-878</td>
+              <td>-10,26%</td>
+              <td>6.027.371,27</td>
+              <td>127,42</td>
+              <td>1.920,00</td>
+              <td>2003-2007: Patamar Elevado Inicial</td>
+            </tr>
+            <tr>
+              <td><strong>2005</strong></td>
+              <td>8.744</td>
+              <td>+1064</td>
+              <td>+13,85%</td>
+              <td>6.073.352,54</td>
+              <td>143,97</td>
+              <td>2.186,00</td>
+              <td>2003-2007: Patamar Elevado Inicial</td>
+            </tr>
+            <tr>
+              <td><strong>2006</strong></td>
+              <td>8.215</td>
+              <td>-529</td>
+              <td>-6,05%</td>
+              <td>6.119.684,59</td>
+              <td>134,24</td>
+              <td>2.053,75</td>
+              <td>2003-2007: Patamar Elevado Inicial</td>
+            </tr>
+            <tr>
+              <td><strong>2007</strong></td>
+              <td>7.996</td>
+              <td>-219</td>
+              <td>-2,67%</td>
+              <td>6.166.370,09</td>
+              <td>129,67</td>
+              <td>1.999,00</td>
+              <td>2003-2007: Patamar Elevado Inicial</td>
+            </tr>
+            <tr>
+              <td><strong>2008</strong></td>
+              <td>6.056</td>
+              <td>-1940</td>
+              <td>-24,26%</td>
+              <td>6.213.411,74</td>
+              <td>97,47</td>
+              <td>1.514,00</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2009</strong></td>
+              <td>5.896</td>
+              <td>-160</td>
+              <td>-2,64%</td>
+              <td>6.260.812,27</td>
+              <td>94,17</td>
+              <td>1.474,00</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2010</strong></td>
+              <td>4.577</td>
+              <td>-1319</td>
+              <td>-22,37%</td>
+              <td>6.305.800,17</td>
+              <td>72,58</td>
+              <td>1.144,25</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2011</strong></td>
+              <td>3.140</td>
+              <td>-1437</td>
+              <td>-31,40%</td>
+              <td>6.352.662,32</td>
+              <td>49,43</td>
+              <td>785,00</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2012</strong></td>
+              <td>3.774</td>
+              <td>+634</td>
+              <td>+20,19%</td>
+              <td>6.381.751,18</td>
+              <td>59,14</td>
+              <td>943,50</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2013</strong></td>
+              <td>3.632</td>
+              <td>-142</td>
+              <td>-3,76%</td>
+              <td>6.420.075,52</td>
+              <td>56,57</td>
+              <td>908,00</td>
+              <td>2008-2013: Retração Consistente (Ciclo UPP)</td>
+            </tr>
+            <tr>
+              <td><strong>2014</strong></td>
+              <td>5.003</td>
+              <td>+1371</td>
+              <td>+37,75%</td>
+              <td>6.447.763,97</td>
+              <td>77,59</td>
+              <td>1.250,75</td>
+              <td>2014-2018: Crise Fiscal e Escalada Crítica</td>
+            </tr>
+            <tr>
+              <td><strong>2015</strong></td>
+              <td>5.530</td>
+              <td>+527</td>
+              <td>+10,53%</td>
+              <td>6.470.914,17</td>
+              <td>85,46</td>
+              <td>1.382,50</td>
+              <td>2014-2018: Crise Fiscal e Escalada Crítica</td>
+            </tr>
+            <tr>
+              <td><strong>2016</strong></td>
+              <td>6.304</td>
+              <td>+774</td>
+              <td>+14,00%</td>
+              <td>6.493.304,55</td>
+              <td>97,08</td>
+              <td>1.576,00</td>
+              <td>2014-2018: Crise Fiscal e Escalada Crítica</td>
+            </tr>
+            <tr>
+              <td><strong>2017</strong></td>
+              <td>8.635</td>
+              <td>+2331</td>
+              <td>+36,98%</td>
+              <td>6.512.177,56</td>
+              <td>132,60</td>
+              <td>2.158,75</td>
+              <td>2014-2018: Crise Fiscal e Escalada Crítica</td>
+            </tr>
+            <tr>
+              <td><strong>2018</strong></td>
+              <td>9.679</td>
+              <td>+1044</td>
+              <td>+12,09%</td>
+              <td>6.649.257,16</td>
+              <td>145,57</td>
+              <td>2.419,75</td>
+              <td>2014-2018: Crise Fiscal e Escalada Crítica</td>
+            </tr>
+            <tr>
+              <td><strong>2019</strong></td>
+              <td>6.995</td>
+              <td>-2684</td>
+              <td>-27,73%</td>
+              <td>6.722.961,14</td>
+              <td>104,05</td>
+              <td>1.748,75</td>
+              <td>2019-2022: Queda Pós-Intervenção e Pandemia</td>
+            </tr>
+            <tr>
+              <td><strong>2020</strong></td>
+              <td>5.309</td>
+              <td>-1686</td>
+              <td>-24,10%</td>
+              <td>6.762.810,67</td>
+              <td>78,50</td>
+              <td>1.327,25</td>
+              <td>2019-2022: Queda Pós-Intervenção e Pandemia</td>
+            </tr>
+            <tr>
+              <td><strong>2021</strong></td>
+              <td>4.292</td>
+              <td>-1017</td>
+              <td>-19,16%</td>
+              <td>6.802.575,57</td>
+              <td>63,09</td>
+              <td>1.073,00</td>
+              <td>2019-2022: Queda Pós-Intervenção e Pandemia</td>
+            </tr>
+            <tr>
+              <td><strong>2022</strong></td>
+              <td>4.311</td>
+              <td>+19</td>
+              <td>+0,44%</td>
+              <td>6.782.154,88</td>
+              <td>63,56</td>
+              <td>1.077,75</td>
+              <td>2019-2022: Queda Pós-Intervenção e Pandemia</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <p><strong>Projeto Final de Disciplina (G2)</strong> — Linguagem de Programação (Análise e Visualização de Dados com Python) • 6º Período de Sistemas de Informação (2026.2)</p>
+    <p>Autor: <strong>Caio Silva Lopes</strong> | Licenças: <strong>MIT</strong> (Software) &amp; <strong>CC-BY 4.0</strong> (Dados e Texto) | Fonte Primária: <a href="http://www.ispdados.rj.gov.br/" target="_blank" rel="noopener">ISP-RJ</a> &amp; <a href="https://www.data.rio/" target="_blank" rel="noopener">DATA.RIO (Tabela 2306)</a></p>
+  </footer>
+
+  <script>
+    const anos = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+    const totalJanAbr = [8558, 7680, 8744, 8215, 7996, 6056, 5896, 4577, 3140, 3774, 3632, 5003, 5530, 6304, 8635, 9679, 6995, 5309, 4292, 4311];
+    const taxa100k = [145.90, 127.42, 143.97, 134.24, 129.67, 97.47, 94.17, 72.58, 49.43, 59.14, 56.57, 77.59, 85.46, 97.08, 132.60, 145.57, 104.05, 78.50, 63.09, 63.56];
+    const difPct = [null, -10.26, 13.85, -6.05, -2.67, -24.26, -2.64, -22.37, -31.40, 20.19, -3.76, 37.75, 10.53, 14.00, 36.98, 12.09, -27.73, -24.10, -19.16, 0.44];
+    const popMilhoes = [5.8657, 6.0274, 6.0734, 6.1197, 6.1664, 6.2134, 6.2608, 6.3058, 6.3527, 6.3818, 6.4201, 6.4478, 6.4709, 6.4933, 6.5122, 6.6493, 6.7230, 6.7628, 6.8026, 6.7822];
+
+    if (document.getElementById('chart-trend')) {
+      const traceTotal = {
+        x: anos,
+        y: totalJanAbr,
+        name: 'Total (Jan–Abr)',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: '#38bdf8', width: 3 },
+        marker: { size: 8, color: '#38bdf8' }
+      };
+
+      const traceTaxa = {
+        x: anos,
+        y: taxa100k,
+        name: 'Taxa / 100 mil hab.',
+        yaxis: 'y2',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: '#f97316', width: 2.5, dash: 'dot' },
+        marker: { size: 7, symbol: 'square', color: '#f97316' }
+      };
+
+      const layoutTrend = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 40, r: 65, b: 50, l: 65 },
+        xaxis: { title: 'Ano (1º Quadrimestre)', tickmode: 'linear', dtick: 1, gridcolor: '#334155' },
+        yaxis: { title: 'Total de Roubos (Jan–Abr)', titlefont: { color: '#38bdf8' }, tickfont: { color: '#38bdf8' }, gridcolor: '#334155' },
+        yaxis2: { title: 'Taxa por 100 mil hab.', titlefont: { color: '#f97316' }, tickfont: { color: '#f97316' }, overlaying: 'y', side: 'right', showgrid: false },
+        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.12 }
+      };
+
+      Plotly.newPlot('chart-trend', [traceTotal, traceTaxa], layoutTrend, { responsive: true });
+    }
+
+    if (document.getElementById('chart-variation')) {
+      const anosVar = anos.slice(1);
+      const valsVar = difPct.slice(1);
+      const barColors = valsVar.map(v => v >= 0 ? '#f97316' : '#38bdf8');
+
+      const traceVar = {
+        x: anosVar,
+        y: valsVar,
+        type: 'bar',
+        marker: { color: barColors },
+        name: 'Variação Anual (%)'
+      };
+
+      const layoutVar = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 30, r: 30, b: 50, l: 65 },
+        xaxis: { title: 'Ano de Comparação', tickmode: 'linear', dtick: 1, gridcolor: '#334155' },
+        yaxis: { title: 'Variação Percentual (%)', gridcolor: '#334155', zeroline: true, zerolinecolor: '#ffffff', zerolinewidth: 1.5 }
+      };
+
+      Plotly.newPlot('chart-variation', [traceVar], layoutVar, { responsive: true });
+    }
+
+    if (document.getElementById('chart-rq3')) {
+      const traceScatter = {
+        x: popMilhoes,
+        y: totalJanAbr,
+        text: anos.map(a => 'Ano: ' + a),
+        mode: 'markers+text',
+        textposition: 'top center',
+        textfont: { color: '#cbd5e1', size: 10 },
+        name: 'Observações Anuais (2003–2022)',
+        type: 'scatter',
+        marker: {
+          size: 11,
+          color: anos.map(a => (a >= 2014 && a <= 2018) ? '#f97316' : '#38bdf8'),
+          line: { color: '#ffffff', width: 1 }
+        }
+      };
+
+      const xLine = [5.85, 6.82];
+      const yLine = xLine.map(x => -2768.91 * x + 23913.91);
+
+      const traceOLS = {
+        x: xLine,
+        y: yLine,
+        mode: 'lines',
+        name: 'Regressão Linear OLS (r = -0,3742)',
+        line: { color: '#f97316', width: 2.5, dash: 'dash' }
+      };
+
+      const layoutRQ3 = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 40, r: 35, b: 55, l: 65 },
+        xaxis: { title: 'População Projetada no MRJ (Milhões de Habitantes)', gridcolor: '#334155' },
+        yaxis: { title: 'Total de Roubos (1º Quadrimestre)', gridcolor: '#334155' },
+        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.12 }
+      };
+
+      Plotly.newPlot('chart-rq3', [traceScatter, traceOLS], layoutRQ3, { responsive: true });
+    }
+  </script>
+
+</body>
+</html>

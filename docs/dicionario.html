@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicionário de Dados & Governança FAIR — Projeto LP6 | Caio Silva Lopes</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #162032;
+  --bg-code: #0b1120;
+  --text-primary: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent-blue: #38bdf8;
+  --accent-blue-dark: #0284c7;
+  --accent-orange: #f97316;
+  --accent-orange-light: #fb923c;
+  --border-color: #334155;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  padding-bottom: 4rem;
+}
+
+/* Global Navigation Bar (BEM) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-blue-dark);
+  padding: 0.85rem 1.5rem;
+}
+
+.navbar__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar__brand-badge {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.navbar__link--active {
+  color: var(--text-primary);
+  background-color: rgba(249, 115, 22, 0.18);
+  border-color: var(--accent-orange);
+}
+
+/* Hero Header */
+.hero {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border-bottom: 3px solid var(--accent-orange);
+  padding: 3rem 1.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--blue {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.badge--orange {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+}
+
+.hero__title {
+  font-size: 2.15rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  max-width: 920px;
+}
+
+.hero__meta {
+  background-color: rgba(15, 23, 42, 0.65);
+  border-left: 4px solid var(--accent-blue);
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__meta strong {
+  color: var(--text-primary);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-orange);
+}
+
+.btn--secondary {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Main Container */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Portal Hub Navigation Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-blue);
+}
+
+.portal-card__tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-orange);
+  margin-bottom: 0.45rem;
+}
+
+.portal-card__title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.portal-card__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.portal-card__link {
+  display: inline-block;
+  text-align: center;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  transition: all 0.2s ease;
+}
+
+.portal-card--orange .portal-card__link {
+  color: var(--text-primary);
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__link:hover {
+  opacity: 0.9;
+}
+
+/* Content Sections */
+.section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section__title {
+  font-size: 1.45rem;
+  color: var(--accent-blue);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.section__subtitle {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.keywords {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.keywords strong {
+  color: var(--accent-orange);
+}
+
+.rq-list {
+  list-style: none;
+  margin: 1rem 0;
+}
+
+.rq-list__item {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  border-radius: 0 6px 6px 0;
+}
+
+.rq-list__label {
+  color: var(--accent-orange);
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+pre {
+  background-color: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin: 1rem 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
+
+pre code {
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.75rem 0.95rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+tr:hover {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+.chart-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.chart-box__img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-box__caption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.kpi-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.kpi-card__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.35rem 0;
+}
+
+.kpi-card__sub {
+  font-size: 0.82rem;
+  color: var(--accent-blue);
+}
+
+.kpi-card--orange .kpi-card__sub {
+  color: var(--accent-orange-light);
+}
+
+.ref-list {
+  padding-left: 1.35rem;
+}
+
+.ref-list li {
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer {
+  max-width: 1140px;
+  margin: 2rem auto 0;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 1.6rem;
+  }
+  .section {
+    padding: 1.35rem;
+  }
+}
+
+/* Portal Hub Specific Styles (BEM - White, Blue & Orange Palette) */
+.hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hub-header__title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+}
+
+.hub-header__subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.portal-grid--main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.35rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.18);
+}
+
+.portal-card--orange:hover {
+  border-color: var(--accent-orange);
+  box-shadow: 0 12px 28px rgba(249, 115, 22, 0.18);
+}
+
+.portal-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.portal-card__step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background-color: rgba(56, 189, 248, 0.14);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.portal-card--orange .portal-card__step {
+  background-color: rgba(249, 115, 22, 0.14);
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__list {
+  list-style: none;
+  margin: 0 0 1.35rem 0;
+  padding: 0;
+}
+
+.portal-card__list-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.28rem 0;
+  border-bottom: 1px dashed rgba(51, 65, 85, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.portal-card__bullet {
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.quick-link-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.quick-link-item--orange {
+  border-left-color: var(--accent-orange);
+}
+
+.quick-link-item:hover {
+  border-color: var(--accent-orange);
+  background-color: rgba(56, 189, 248, 0.08);
+}
+
+.quick-link-item__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.quick-link-item--orange .quick-link-item__title {
+  color: var(--accent-orange);
+}
+
+.quick-link-item__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__brand-badge">LP6 • G2</span>
+        <span>Portal de Ciência Aberta — Roubo de Veículos MRJ</span>
+      </a>
+      <ul class="navbar__menu">
+        <li><a href="index.html" class="navbar__link">Portal Principal</a></li>
+        <li><a href="artigo.html" class="navbar__link">Artigo Científico</a></li>
+        <li><a href="exploratoria.html" class="navbar__link">Painel EDA & Gráficos</a></li>
+        <li><a href="dicionario.html" class="navbar__link navbar__link--active">Dicionário & FAIR</a></li>
+        <li><a href="pipeline.html" class="navbar__link">Pipeline ETL & Auditoria</a></li>
+        <li><a href="https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git" target="_blank" rel="noopener" class="navbar__link">Repositório GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__container">
+      <div class="hero__badges">
+        <span class="badge badge--blue">Módulo 03 • Governança &amp; Princípios FAIR</span>
+        <span class="badge badge--orange">Metadados Padronizados</span>
+        <span class="badge badge--blue">data/data_dictionary.md</span>
+      </div>
+      <h1 class="hero__title">Dicionário de Dados, Metadados Oficiais e Enquadramento FAIR</h1>
+      <p class="hero__subtitle">Documentação de interoperabilidade detalhando cada variável do dataset tratado, tipos primitivos, fórmulas matemáticas e notas metodológicas extraídas da aba Definições.</p>
+      <div class="hero__actions">
+        <a href="index.html" class="btn btn--secondary">← Voltar ao Portal Principal</a>
+        <a href="pipeline.html" class="btn btn--primary">Avançar para Pipeline ETL &amp; Auditoria →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2 class="section__title">1. Dicionário de Variáveis (<code>data/data_dictionary.md</code>)</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome da Variável</th>
+              <th>Rótulo Bruto (<code>2306.xls</code>)</th>
+              <th>Tipo Primitivo</th>
+              <th>Unidade / Formato</th>
+              <th>Domínio Observado</th>
+              <th>Significado de Pesquisa e Regra de Cálculo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ano</code></td>
+              <td>Ano (1º quadrimestre)</td>
+              <td><code>int64</code></td>
+              <td>Ano civil (AAAA)</td>
+              <td><code>2003</code> a <code>2022</code> ($N=20$)</td>
+              <td>Ano de referência do acumulado do 1º quadrimestre (janeiro a abril).</td>
+            </tr>
+            <tr>
+              <td><code>total_jan_abr</code></td>
+              <td>Total - Jan-Abr</td>
+              <td><code>int64</code></td>
+              <td>Ocorrências inteiras</td>
+              <td><code>3140</code> a <code>9679</code></td>
+              <td>Total absoluto de Registros de Ocorrência (RO) de roubo de veículos no Município do Rio de Janeiro no 1º quadrimestre.</td>
+            </tr>
+            <tr>
+              <td><code>dif_absoluta</code></td>
+              <td>Diferença Absoluta</td>
+              <td><code>float64</code></td>
+              <td>Variação ($\Delta$ casos)</td>
+              <td><code>-2684.0</code> a <code>2331.0</code> (<code>NaN</code> em 2003)</td>
+              <td>Variação absoluta anual: $\Delta_{	ext{abs}, t} = 	ext{total\_jan\_abr}_t - 	ext{total\_jan\_abr}_{t-1}$. Marcador original <code>".."</code> convertido para <code>NaN</code>.</td>
+            </tr>
+            <tr>
+              <td><code>dif_percentual</code></td>
+              <td>Diferença %</td>
+              <td><code>float64</code></td>
+              <td>Percentual (%)</td>
+              <td><code>-31.40%</code> a <code>+37.75%</code> (<code>NaN</code> em 2003)</td>
+              <td>Variação relativa anual: $\Delta_{\%, t} = \left(rac{	ext{total\_jan\_abr}_t - 	ext{total\_jan\_abr}_{t-1}}{	ext{total\_jan\_abr}_{t-1}}ight) 	imes 100$.</td>
+            </tr>
+            <tr>
+              <td><code>populacao</code></td>
+              <td>População</td>
+              <td><code>float64</code></td>
+              <td>Habitantes projetados</td>
+              <td><code>5.865.737,42</code> a <code>6.802.575,57</code></td>
+              <td>Projeção demográfica oficial elaborada pelo ISP para o Município do Rio de Janeiro, referente ao mês de abril de cada ano.</td>
+            </tr>
+            <tr>
+              <td><code>taxa_100k</code></td>
+              <td>Taxa por 100 mil habitantes</td>
+              <td><code>float64</code></td>
+              <td>Casos / 100 mil hab.</td>
+              <td><code>49,43</code> a <code>145,90</code></td>
+              <td>Índice padronizado: $	ext{taxa\_100k}_t = \left(rac{	ext{total\_jan\_abr}_t}{	ext{populacao}_t}ight) 	imes 100.000$.</td>
+            </tr>
+            <tr>
+              <td><code>media_mensal</code></td>
+              <td>Média mensal</td>
+              <td><code>float64</code></td>
+              <td>Ocorrências / mês</td>
+              <td><code>785,00</code> a <code>2.419,75</code></td>
+              <td>Média aritmética mensal nos 4 primeiros meses do ano: $	ext{media\_mensal}_t = rac{	ext{total\_jan\_abr}_t}{4}$.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">2. Notas Metodológicas Oficiais Extraídas da Aba <code>Definições</code></h2>
+      <p>O pipeline <code>src/etl.py</code> extrai automaticamente os metadados jurídicos da aba <code>Definições</code> da planilha original <code>2306.xls</code> e os persiste em <code>data/processed/definicoes_metadados_isp.txt</code>:</p>
+      <pre><code>METADADOS OFICIAIS — ABA 'Definições' (Tabela 2306 DATA.RIO / ISP-RJ)
+===========================================================================
+
+A classificação de um crime realizada pela Polícia Civil é provisória, ou seja, corresponde à primeira impressão acerca do fato durante o período do inquérito policial. Deste modo, o título do Registro de Ocorrência pode ser alterado pela autoridade policial no decorrer da investigação mediante a confecção de um Registro de Aditamento. Do mesmo modo, pode ocorrer alteração na classificação por parte do Ministério Público durante o oferecimento da denúncia e pelo Judiciário na confirmação da sentença. A divulgação das estatísticas oficiais dos crimes registrados não tem o objetivo de dar conta de tudo o que ocorreu, e sim orientar a administração pública quanto aos caminhos que deve seguir no planejamento, execução e redirecionamento das ações do sistema policial. Serve, também, para a população conhecer o que está acontecendo ao seu redor; e, depois, para que, conhecendo os dados e áreas de incidência, a população e os diferentes setores da sociedade civil possam apresentar suas demandas ao Poder Público e contribuir para o esforço comunitário contra a insegurança.
+
+Definições  baseadas em : Secretaria Nacional de Segurança Pública (SENASP) Manual de Preenchimento Formulário de Coleta Mensal de Ocorrências Criminais e Atividades de Polícia, organizado pelo Departamento de Pesquisa, Análise da Informação e de Preenchimento de Delitos e Detalhamentos de Delitos do SCO, organizado pelo Programa Delegacia Legal.Desenvolvimento de Pessoal em Segurança Pública, 2ª edição e  Secretaria de Estado de Segurança (SESEG)  Manual</code></pre>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">3. Matriz de Conformidade com os Princípios FAIR</h2>
+      <ul class="rq-list">
+        <li class="rq-list__item"><span class="rq-list__label">Findable:</span> Identificação formal de autoria (Caio Silva Lopes), disciplina, 6º período (2026.2), resumo executivo, palavras-chave padronizadas e URL oficial da fonte primária (ISP-RJ / DATA.RIO).</li>
+        <li class="rq-list__item"><span class="rq-list__label">Accessible:</span> Código-fonte, dados brutos/processados e portal web multipágina servidos publicamente via GitHub e GitHub Pages sem barreiras de autenticação paga.</li>
+        <li class="rq-list__item"><span class="rq-list__label">Interoperable:</span> Persistência simultânea em padrões abertos universais (<code>.csv</code>, <code>.csv.gz</code> e <code>.json</code>) documentados por este dicionário de dados estruturado.</li>
+        <li class="rq-list__item"><span class="rq-list__label">Reusable:</span> Licenciamento aberto explícito (MIT License para software e CC-BY 4.0 para dados e texto) aliado ao arquivo <code>requirements.txt</code> com versões congeladas.</li>
+      </ul>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <p><strong>Projeto Final de Disciplina (G2)</strong> — Linguagem de Programação (Análise e Visualização de Dados com Python) • 6º Período de Sistemas de Informação (2026.2)</p>
+    <p>Autor: <strong>Caio Silva Lopes</strong> | Licenças: <strong>MIT</strong> (Software) &amp; <strong>CC-BY 4.0</strong> (Dados e Texto) | Fonte Primária: <a href="http://www.ispdados.rj.gov.br/" target="_blank" rel="noopener">ISP-RJ</a> &amp; <a href="https://www.data.rio/" target="_blank" rel="noopener">DATA.RIO (Tabela 2306)</a></p>
+  </footer>
+</body>
+</html>

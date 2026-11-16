@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artigo Científico — Roubos de Veículos no MRJ (2003–2022) | Caio Silva Lopes</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #162032;
+  --bg-code: #0b1120;
+  --text-primary: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent-blue: #38bdf8;
+  --accent-blue-dark: #0284c7;
+  --accent-orange: #f97316;
+  --accent-orange-light: #fb923c;
+  --border-color: #334155;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  padding-bottom: 4rem;
+}
+
+/* Global Navigation Bar (BEM) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-blue-dark);
+  padding: 0.85rem 1.5rem;
+}
+
+.navbar__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar__brand-badge {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.navbar__link--active {
+  color: var(--text-primary);
+  background-color: rgba(249, 115, 22, 0.18);
+  border-color: var(--accent-orange);
+}
+
+/* Hero Header */
+.hero {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border-bottom: 3px solid var(--accent-orange);
+  padding: 3rem 1.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--blue {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.badge--orange {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+}
+
+.hero__title {
+  font-size: 2.15rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  max-width: 920px;
+}
+
+.hero__meta {
+  background-color: rgba(15, 23, 42, 0.65);
+  border-left: 4px solid var(--accent-blue);
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__meta strong {
+  color: var(--text-primary);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-orange);
+}
+
+.btn--secondary {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Main Container */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Portal Hub Navigation Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-blue);
+}
+
+.portal-card__tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-orange);
+  margin-bottom: 0.45rem;
+}
+
+.portal-card__title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.portal-card__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.portal-card__link {
+  display: inline-block;
+  text-align: center;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  transition: all 0.2s ease;
+}
+
+.portal-card--orange .portal-card__link {
+  color: var(--text-primary);
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__link:hover {
+  opacity: 0.9;
+}
+
+/* Content Sections */
+.section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section__title {
+  font-size: 1.45rem;
+  color: var(--accent-blue);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.section__subtitle {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.keywords {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.keywords strong {
+  color: var(--accent-orange);
+}
+
+.rq-list {
+  list-style: none;
+  margin: 1rem 0;
+}
+
+.rq-list__item {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  border-radius: 0 6px 6px 0;
+}
+
+.rq-list__label {
+  color: var(--accent-orange);
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+pre {
+  background-color: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin: 1rem 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
+
+pre code {
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.75rem 0.95rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+tr:hover {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+.chart-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.chart-box__img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-box__caption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.kpi-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.kpi-card__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.35rem 0;
+}
+
+.kpi-card__sub {
+  font-size: 0.82rem;
+  color: var(--accent-blue);
+}
+
+.kpi-card--orange .kpi-card__sub {
+  color: var(--accent-orange-light);
+}
+
+.ref-list {
+  padding-left: 1.35rem;
+}
+
+.ref-list li {
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer {
+  max-width: 1140px;
+  margin: 2rem auto 0;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 1.6rem;
+  }
+  .section {
+    padding: 1.35rem;
+  }
+}
+
+/* Portal Hub Specific Styles (BEM - White, Blue & Orange Palette) */
+.hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hub-header__title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+}
+
+.hub-header__subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.portal-grid--main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.35rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.18);
+}
+
+.portal-card--orange:hover {
+  border-color: var(--accent-orange);
+  box-shadow: 0 12px 28px rgba(249, 115, 22, 0.18);
+}
+
+.portal-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.portal-card__step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background-color: rgba(56, 189, 248, 0.14);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.portal-card--orange .portal-card__step {
+  background-color: rgba(249, 115, 22, 0.14);
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__list {
+  list-style: none;
+  margin: 0 0 1.35rem 0;
+  padding: 0;
+}
+
+.portal-card__list-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.28rem 0;
+  border-bottom: 1px dashed rgba(51, 65, 85, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.portal-card__bullet {
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.quick-link-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.quick-link-item--orange {
+  border-left-color: var(--accent-orange);
+}
+
+.quick-link-item:hover {
+  border-color: var(--accent-orange);
+  background-color: rgba(56, 189, 248, 0.08);
+}
+
+.quick-link-item__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.quick-link-item--orange .quick-link-item__title {
+  color: var(--accent-orange);
+}
+
+.quick-link-item__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__brand-badge">LP6 • G2</span>
+        <span>Portal de Ciência Aberta — Roubo de Veículos MRJ</span>
+      </a>
+      <ul class="navbar__menu">
+        <li><a href="index.html" class="navbar__link">Portal Principal</a></li>
+        <li><a href="artigo.html" class="navbar__link navbar__link--active">Artigo Científico</a></li>
+        <li><a href="exploratoria.html" class="navbar__link">Painel EDA & Gráficos</a></li>
+        <li><a href="dicionario.html" class="navbar__link">Dicionário & FAIR</a></li>
+        <li><a href="pipeline.html" class="navbar__link">Pipeline ETL & Auditoria</a></li>
+        <li><a href="https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git" target="_blank" rel="noopener" class="navbar__link">Repositório GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__container">
+      <div class="hero__badges">
+        <span class="badge badge--blue">Módulo 01 • Artigo Acadêmico</span>
+        <span class="badge badge--orange">Rigor Científico &amp; ABNT</span>
+        <span class="badge badge--blue">FAIR Compliant</span>
+      </div>
+      <h1 class="hero__title">Dinâmica Histórica e Ciclos de Incidência de Roubos de Veículos no Município do Rio de Janeiro: Uma Análise Exploratória do 1º Quadrimestre (2003–2022)</h1>
+      <div class="hero__meta">
+        <p><strong>Autor:</strong> Caio Silva Lopes | <strong>Curso:</strong> Bacharelado em Sistemas de Informação — 6º Período (2026.2)</p>
+        <p><strong>Disciplina:</strong> Linguagem de Programação (Análise e Visualização de Dados com Python)</p>
+      </div>
+      <div class="hero__actions">
+        <a href="index.html" class="btn btn--secondary">← Voltar ao Portal Principal</a>
+        <a href="exploratoria.html" class="btn btn--primary">Ir para Painel EDA &amp; Tabela Completa →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="section" id="resumo">
+      <h2 class="section__title">Resumo Executivo / Abstract</h2>
+      <p>Este estudo investiga o comportamento histórico das ocorrências de roubo de veículos no Município do Rio de Janeiro (MRJ) ao longo de duas décadas (2003–2022), utilizando recortes acumulados do primeiro quadrimestre (janeiro a abril) disponibilizados pelo Instituto de Segurança Pública (ISP-RJ) e tabulados pelo Instituto Pereira Passos (DATA.RIO). Foi desenvolvido um pipeline determinístico de Engenharia de Dados em Python para higienização da Tabela 2306, remoção de artefatos de formatação, tratamento de marcadores não numéricos, extração dos metadados jurídicos da aba <code>Definições</code> e auditoria cruzada das taxas por 100 mil habitantes e médias mensais. Os resultados empíricos revelam uma média quadrimestral histórica de 6.216,30 ocorrências ($\text{DP} = 1.982,21$) e mediana de 5.976,00 registros, estruturadas em quatro ciclos distintos: (i) patamar elevado inicial entre 2003 e 2007 (média de 8.238,60 casos); (ii) retração sustentada entre 2008 e 2013 durante a expansão das UPPs, atingindo o mínimo histórico de 3.140 casos ($49,43$ por 100 mil habitantes) em 2011; (iii) severa escalada criminal entre 2014 e 2018, culminando no pico absoluto de 9.679 roubos ($145,57$ por 100 mil habitantes) em 2018; e (iv) desaceleração acentuada entre 2019 e 2022, estabilizando-se em 4.311 registros no último ano da série. Adicionalmente, constatou-se correlação linear negativa de Pearson ($r = -0,3742$) e de Spearman ($\rho = -0,3308$) entre o crescimento populacional do município e o total de roubos, demonstrando que a incidência criminal decorre de choques operacionais, institucionais e de mobilidade urbana, e não da expansão demográfica.</p>
+      <div class="keywords">
+        <strong>Palavras-chave:</strong> Segurança Pública; Roubo de Veículos; Rio de Janeiro; Ciência de Dados Aberta; Princípios FAIR; Séries Temporais.
+      </div>
+    </section>
+
+    <section class="section" id="introducao">
+      <h2 class="section__title">1. Introdução e Questões de Pesquisa</h2>
+      <p>O monitoramento sistemático de indicadores criminais constitui um pilar indispensável para o planejamento de políticas públicas de policiamento ostensivo, alocação de recursos investigativos e avaliação de impacto socioeconômico em grandes metrópoles. No Município do Rio de Janeiro (MRJ), o delito de roubo de veículos apresenta elevada relevância criminológica por refletir simultaneamente a atuação de redes de receptação e desmanche, o grau de controle territorial nas vias expressas e a exposição cotidiana da população à violência patrimonial armada.</p>
+      <p>A transparência ativa de dados governamentais pelo Instituto de Segurança Pública (ISP-RJ) e pelo portal DATA.RIO viabiliza análises longitudinais rigorosas, porém os arquivos brutos frequentemente são distribuídos em planilhas formatadas para leitura visual humana, contendo células mescladas, notas de rodapé acopladas e marcadores textuais para dados inexistentes. Este trabalho aplica técnicas de Engenharia de Dados e Análise Exploratória de Dados (EDA) sob os princípios internacionais FAIR para responder a três Perguntas de Pesquisa centrais:</p>
+      <ul class="rq-list">
+        <li class="rq-list__item"><span class="rq-list__label">RQ1:</span> Como evoluíram o volume absoluto e a taxa de roubos de veículos por 100 mil habitantes no 1º quadrimestre no Município do Rio de Janeiro entre 2003 e 2022, e quais foram os pontos de inflexão crítica da série?</li>
+        <li class="rq-list__item"><span class="rq-list__label">RQ2:</span> Quais anos apresentaram os maiores choques de variação anual (absoluta e percentual) e como essas oscilações se distribuem em ciclos plurianuais de segurança pública?</li>
+        <li class="rq-list__item"><span class="rq-list__label">RQ3:</span> Existe relação estatisticamente positiva entre o crescimento demográfico do Município do Rio de Janeiro e a variação nas ocorrências de roubo de veículos no período analisado?</li>
+      </ul>
+    </section>
+
+    <section class="section" id="metodologia">
+      <h2 class="section__title">2. Metodologia e Pipeline de Dados</h2>
+      <p>A fonte primária consiste na <strong>Tabela 2306</strong> do portal DATA.RIO, alimentada pelos Registros de Ocorrência (RO) da Polícia Civil consolidados pelo ISP-RJ e tabulados pela Coordenadoria Técnica de Informações da Cidade do Instituto Pereira Passos (IPP). A granularidade temporal é anual, restrita ao acumulado do 1º quadrimestre (janeiro a abril) de cada ano entre 2003 e 2022 ($N = 20$ anos).</p>
+      <h3 class="section__subtitle">Formulações Matemáticas Auditadas no Pipeline</h3>
+      <p>Para cada ano $t \in \{2003, \dots, 2022\}$, o pipeline verifica de forma determinística (tolerância absoluta $\epsilon = 10^{-4}$) as quatro métricas derivadas reportadas pelo IPP/ISP:</p>
+      <p>$$\Delta_{\text{abs}, t} = \text{Total}_t - \text{Total}_{t-1}, \quad \Delta_{\%, t} = \left(\frac{\text{Total}_t - \text{Total}_{t-1}}{\text{Total}_{t-1}}\right) \times 100$$</p>
+      <p>$$\text{Taxa}_{100k, t} = \left(\frac{\text{Total}_t}{\text{População}_t}\right) \times 100.000, \quad \text{Média}_{\text{mensal}, t} = \frac{\text{Total}_t}{4}$$</p>
+      <h3 class="section__subtitle">Implementação Modular de Higienização (<code>src/etl.py</code>)</h3>
+      <pre><code>def transform_vehicle_robbery_data(raw_df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
+    # 1. Isolamento das linhas válidas (índices 9 a 28: anos 2003 a 2022)
+    df = raw_df.iloc[9:29].copy()
+    df.columns = [
+        "ano", "total_jan_abr", "dif_absoluta", "dif_percentual",
+        "populacao", "taxa_100k", "media_mensal"
+    ]
+
+    # 2. Conversão do marcador textual '..' (ano base 2003) para NaN e tipagem estrita
+    df = df.replace("..", np.nan)
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    df["ano"] = df["ano"].astype(int)
+    df["total_jan_abr"] = df["total_jan_abr"].astype(int)
+
+    # 3. Auditoria algébrica determinística das colunas derivadas (erro zero)
+    assert np.allclose(df["taxa_100k"], (df["total_jan_abr"] / df["populacao"]) * 1e5, atol=1e-4)
+    assert np.allclose(df["media_mensal"], df["total_jan_abr"] / 4.0, atol=1e-4)
+    return df.sort_values("ano").reset_index(drop=True), {"status": "APROVADO_ERRO_ZERO"}</code></pre>
+    </section>
+
+    <section class="section" id="resultados">
+      <h2 class="section__title">3. Resultados e Discussão</h2>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-card__label">Média Histórica (Jan–Abr)</div>
+          <div class="kpi-card__value">6.216,30</div>
+          <div class="kpi-card__sub">Mediana: 5.976,00 | DP: 1.982,21</div>
+        </div>
+        <div class="kpi-card kpi-card--orange">
+          <div class="kpi-card__label">Mínimo Histórico (2011)</div>
+          <div class="kpi-card__value">3.140</div>
+          <div class="kpi-card__sub">Taxa: 49,43 / 100 mil hab. (-31,40%)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__label">Pico Absoluto (2018)</div>
+          <div class="kpi-card__value">9.679</div>
+          <div class="kpi-card__sub">Taxa: 145,57 / 100 mil hab. (+12,09%)</div>
+        </div>
+        <div class="kpi-card kpi-card--orange">
+          <div class="kpi-card__label">Correlação Pop. vs Crime</div>
+          <div class="kpi-card__value">r = -0,3742</div>
+          <div class="kpi-card__sub">Spearman: -0,3308 | R² = 0,1400</div>
+        </div>
+      </div>
+
+      <h3 class="section__subtitle">Tabela 1: Estatísticas Descritivas da Série Histórica (2003–2022)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Variável Analisada</th>
+              <th>N</th>
+              <th>Média</th>
+              <th>Mediana</th>
+              <th>Mínimo</th>
+              <th>Máximo</th>
+              <th>Desvio Padrão</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total no 1º Quadrimestre (<code>total_jan_abr</code>)</td>
+              <td>20</td>
+              <td>6.216,30</td>
+              <td>5.976,00</td>
+              <td>3.140,00</td>
+              <td>9.679,00</td>
+              <td>1.982,21</td>
+            </tr>
+            <tr>
+              <td>Diferença Absoluta Anual (<code>dif_absoluta</code>)</td>
+              <td>19</td>
+              <td>-223,53</td>
+              <td>-160,00</td>
+              <td>-2.684,00</td>
+              <td>2.331,00</td>
+              <td>1.283,63</td>
+            </tr>
+            <tr>
+              <td>Diferença Percentual Anual (<code>dif_percentual</code>)</td>
+              <td>19</td>
+              <td>-1,50%</td>
+              <td>-2,67%</td>
+              <td>-31,40%</td>
+              <td>37,75%</td>
+              <td>20,77%</td>
+            </tr>
+            <tr>
+              <td>População Estimada (<code>populacao</code>)</td>
+              <td>20</td>
+              <td>6.391.547,44</td>
+              <td>6.400.913,35</td>
+              <td>5.865.737,42</td>
+              <td>6.802.575,57</td>
+              <td>267.889,48</td>
+            </tr>
+            <tr>
+              <td>Taxa por 100 mil Habitantes (<code>taxa_100k</code>)</td>
+              <td>20</td>
+              <td>97,90</td>
+              <td>95,63</td>
+              <td>49,43</td>
+              <td>145,90</td>
+              <td>33,00</td>
+            </tr>
+            <tr>
+              <td>Média Mensal (<code>media_mensal</code>)</td>
+              <td>20</td>
+              <td>1.554,08</td>
+              <td>1.494,00</td>
+              <td>785,00</td>
+              <td>2.419,75</td>
+              <td>495,55</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="section__subtitle">Análise de RQ1: Evolução Temporal e Pontos de Inflexão</h3>
+      <p>Em resposta à <strong>RQ1</strong>, a série histórica exibe comportamento acentuadamente cíclico. Embora o maior valor da taxa relativa tenha ocorrido no início da série em 2003 (145,90 por 100 mil habitantes, com 8.558 casos para uma população projetada de 5,87 milhões), o recorde em volume absoluto e média mensal verificou-se em 2018 (9.679 ocorrências, média de 2.419,75 roubos/mês e taxa de 145,57 por 100 mil habitantes). O gráfico interativo abaixo permite inspecionar simultaneamente o total quadrimestral e a taxa demográfica padronizada.</p>
+
+      <div class="chart-box">
+        <div id="chart-trend" style="width:100%;height:430px;"></div>
+        <div class="chart-box__caption">Figura 1 (Interativa - Plotly): Evolução do total de roubos de veículos e taxa por 100 mil habitantes no MRJ (1º Quadrimestre: 2003–2022).</div>
+      </div>
+
+      <h3 class="section__subtitle">Análise de RQ2: Choques de Variação Anual e Ciclos Plurianuais</h3>
+      <p>Respondendo à <strong>RQ2</strong>, a decomposição das diferenças anuais identifica quatro fases plurianuais bem demarcadas: (1) de 2003 a 2007, manutenção de patamar elevado com média de 8.238,60 ocorrências; (2) entre 2008 e 2013, ciclo de retração consistente durante a implantação das Unidades de Polícia Pacificadora (UPPs), destacando-se os recuos de 2008 (-1.940 casos; -24,26%) e 2011 (-1.437 casos; -31,40%, maior queda relativa da série); (3) entre 2014 e 2018, cinco altas anuais seguidas impulsionadas pela crise fiscal e securitária estadual, com o maior salto percentual em 2014 (+37,75%; +1.371 casos) e o maior salto absoluto em 2017 (+2.331 casos; +36,98%); (4) de 2019 a 2022, forte desaceleração iniciada em 2019 (-2.684 ocorrências; -27,73%, maior queda absoluta da série após a Intervenção Federal em 2018), aprofundada durante a pandemia de COVID-19 em 2020 (-24,10%) e 2021 (-19,16%), estabilizando-se em 2022 (+0,44%).</p>
+
+      <div class="chart-box">
+        <div id="chart-variation" style="width:100%;height:390px;"></div>
+        <div class="chart-box__caption">Figura 2 (Interativa - Plotly): Variação percentual anual (%) em relação ao 1º quadrimestre do ano imediatamente anterior (2004–2022).</div>
+      </div>
+
+      <div class="chart-box">
+        <img src="assets/analise_roubo_veiculos_rj.png" alt="Painel Estático RQ1 e RQ2" class="chart-box__img">
+        <div class="chart-box__caption">Figura 3 (Estática de Alta Resolução - <code>docs/assets/analise_roubo_veiculos_rj.png</code>): Painel consolidado de evolução histórica e variação percentual anual.</div>
+      </div>
+
+      <h3 class="section__subtitle">Análise de RQ3: Dinâmica Demográfica vs. Incidência Criminal</h3>
+      <p>Em relação à <strong>RQ3</strong>, enquanto a população projetada pelo ISP para o Município do Rio de Janeiro cresceu 15,62% entre 2003 (5.865.737 habitantes) e 2022 (6.782.155 habitantes, após atingir pico de 6.802.576 em 2021), o volume de roubos de veículos em 2022 (4.311 casos) situou-se 49,63% abaixo do patamar de 2003 (8.558 casos). O ajuste da regressão linear por Mínimos Quadrados Ordinários (OLS) resultou na equação $\widehat{\text{Total}} = -2.768,91 \times \text{Pop}_{\text{milhões}} + 23.913,91$ ($r = -0,3742$, $R^2 = 0,1400$), refutando empiricamente a hipótese de que o crescimento vegetativo da população explique o aumento de roubos de veículos na capital fluminense.</p>
+
+      <div class="chart-box">
+        <div id="chart-rq3" style="width:100%;height:420px;"></div>
+        <div class="chart-box__caption">Figura 4 (Interativa - Plotly): Diagrama de dispersão entre População Projetada e Total de Roubos com reta de regressão OLS (RQ3).</div>
+      </div>
+
+      <div class="chart-box">
+        <img src="assets/dispersao_populacao_roubos_rj.png" alt="Dispersão População vs Roubos RQ3" class="chart-box__img">
+        <div class="chart-box__caption">Figura 5 (Estática de Alta Resolução - <code>docs/assets/dispersao_populacao_roubos_rj.png</code>): Dispersão estratificada por ciclos históricos de segurança pública (2003–2022).</div>
+      </div>
+    </section>
+
+    <section class="section" id="conclusao">
+      <h2 class="section__title">4. Conclusão, Limitações e Trabalhos Futuros</h2>
+      <p>A análise longitudinal da Tabela 2306 demonstra que os roubos de veículos no Município do Rio de Janeiro respondem fortemente a ciclos de governança da segurança pública, conjuntura econômico-fiscal estadual e choques de mobilidade urbana, apresentando amplitude superior a 300% entre o vale histórico de 2011 (3.140 casos) e o pico de 2018 (9.679 casos).</p>
+      <p><strong>Limitações Metodológicas:</strong> Conforme documentado na aba <code>Definições</code> da base oficial (normas SENASP/SESEG), a tipificação criminal realizada pela Polícia Civil no Registro de Ocorrência é provisória, podendo sofrer aditamento durante o inquérito policial ou reclassificação pelo Ministério Público e pelo Judiciário. Ademais, o recorte exclusivo do 1º quadrimestre não captura variações sazonais do segundo semestre. Como trabalhos futuros, propõe-se integrar a série com microdados mensais por Circunscrição Integrada de Segurança Pública (CISP) e taxas de recuperação de veículos.</p>
+    </section>
+
+    <section class="section" id="declaracao-fair">
+      <h2 class="section__title">5. Disponibilidade dos Dados e Declaração FAIR</h2>
+      <p>Este projeto atende integralmente aos princípios internacionais <strong>FAIR (Findable, Accessible, Interoperable, Reusable)</strong>:</p>
+      <ul class="rq-list">
+        <li class="rq-list__item"><span class="rq-list__label">Findable (Localizável):</span> Metadados completos no <code>README.md</code>, identificação formal de autoria (Caio Silva Lopes), curso e semestre, e link perene para o portal DATA.RIO / ISP-RJ.</li>
+        <li class="rq-list__item"><span class="rq-list__label">Accessible (Acessível):</span> Repositório público no GitHub e portal multipágina publicado via GitHub Pages sem barreiras de autenticação proprietária.</li>
+        <li class="rq-list__item"><span class="rq-list__label">Interoperable (Interoperável):</span> Dados persistidos em formatos universais abertos (<code>.csv</code>, <code>.csv.gz</code> e <code>.json</code>), notas oficiais extraídas em <code>definicoes_metadados_isp.txt</code> e dicionário de variáveis em <code>data/data_dictionary.md</code>.</li>
+        <li class="rq-list__item"><span class="rq-list__label">Reusable (Reutilizável):</span> Licenciamento aberto duplo sob MIT License (software) e CC-BY 4.0 (dados e texto), com ambiente determinístico configurado em <code>requirements.txt</code>.</li>
+      </ul>
+      <pre><code># Comandos de terminal para clonagem e reprodução integral do pipeline
+git clone https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git
+cd LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2
+python -m venv .venv
+source .venv/bin/activate  # No Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python src/etl.py</code></pre>
+    </section>
+
+    <section class="section" id="referencias">
+      <h2 class="section__title">6. Referências Normativas (Padrão ABNT)</h2>
+      <ol class="ref-list">
+        <li>INSTITUTO DE SEGURANÇA PÚBLICA DO ESTADO DO RIO DE JANEIRO (ISP-RJ). <strong>Estatísticas de Segurança: Série Histórica Mensal e Quadrimestral no Estado do Rio de Janeiro</strong>. Rio de Janeiro: ISP, 2022. Disponível em: http://www.ispdados.rj.gov.br/. Acesso em: 24 maio 2022.</li>
+        <li>INSTITUTO PEREIRA PASSOS (IPP) / DATA.RIO. <strong>Tabela 2306: Incidências de roubo de veículos, diferenças em relação ao mesmo quadrimestre do ano anterior, taxa por cem mil habitantes e média mensal segundo o 1º quadrimestre de cada ano, no Município do Rio de Janeiro entre Janeiro/Abril/2003 e Janeiro/Abril/2022</strong>. Rio de Janeiro: Coordenadoria Técnica de Informações da Cidade, 2022.</li>
+        <li>BRASIL. Secretaria Nacional de Segurança Pública (SENASP). <strong>Manual de Preenchimento do Formulário de Coleta Mensal de Ocorrências Criminais e Atividades de Polícia</strong>. 2. ed. Brasília: Ministério da Justiça, Programa Delegacia Legal / SESEG-RJ, 2015.</li>
+        <li>WILKINSON, M. D. et al. The FAIR Guiding Principles for scientific data management and stewardship. <strong>Scientific Data</strong>, v. 3, n. 160018, p. 1–9, 2016.</li>
+        <li>MCKINNEY, W. Data structures for statistical computing in Python. In: <strong>Proceedings of the 9th Python in Science Conference (SciPy)</strong>, v. 445, p. 51–56, 2010.</li>
+      </ol>
+    </section>
+
+  </main>
+
+
+  <footer class="footer">
+    <p><strong>Projeto Final de Disciplina (G2)</strong> — Linguagem de Programação (Análise e Visualização de Dados com Python) • 6º Período de Sistemas de Informação (2026.2)</p>
+    <p>Autor: <strong>Caio Silva Lopes</strong> | Licenças: <strong>MIT</strong> (Software) &amp; <strong>CC-BY 4.0</strong> (Dados e Texto) | Fonte Primária: <a href="http://www.ispdados.rj.gov.br/" target="_blank" rel="noopener">ISP-RJ</a> &amp; <a href="https://www.data.rio/" target="_blank" rel="noopener">DATA.RIO (Tabela 2306)</a></p>
+  </footer>
+
+  <script>
+    const anos = [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+    const totalJanAbr = [8558, 7680, 8744, 8215, 7996, 6056, 5896, 4577, 3140, 3774, 3632, 5003, 5530, 6304, 8635, 9679, 6995, 5309, 4292, 4311];
+    const taxa100k = [145.90, 127.42, 143.97, 134.24, 129.67, 97.47, 94.17, 72.58, 49.43, 59.14, 56.57, 77.59, 85.46, 97.08, 132.60, 145.57, 104.05, 78.50, 63.09, 63.56];
+    const difPct = [null, -10.26, 13.85, -6.05, -2.67, -24.26, -2.64, -22.37, -31.40, 20.19, -3.76, 37.75, 10.53, 14.00, 36.98, 12.09, -27.73, -24.10, -19.16, 0.44];
+    const popMilhoes = [5.8657, 6.0274, 6.0734, 6.1197, 6.1664, 6.2134, 6.2608, 6.3058, 6.3527, 6.3818, 6.4201, 6.4478, 6.4709, 6.4933, 6.5122, 6.6493, 6.7230, 6.7628, 6.8026, 6.7822];
+
+    if (document.getElementById('chart-trend')) {
+      const traceTotal = {
+        x: anos,
+        y: totalJanAbr,
+        name: 'Total (Jan–Abr)',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: '#38bdf8', width: 3 },
+        marker: { size: 8, color: '#38bdf8' }
+      };
+
+      const traceTaxa = {
+        x: anos,
+        y: taxa100k,
+        name: 'Taxa / 100 mil hab.',
+        yaxis: 'y2',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: '#f97316', width: 2.5, dash: 'dot' },
+        marker: { size: 7, symbol: 'square', color: '#f97316' }
+      };
+
+      const layoutTrend = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 40, r: 65, b: 50, l: 65 },
+        xaxis: { title: 'Ano (1º Quadrimestre)', tickmode: 'linear', dtick: 1, gridcolor: '#334155' },
+        yaxis: { title: 'Total de Roubos (Jan–Abr)', titlefont: { color: '#38bdf8' }, tickfont: { color: '#38bdf8' }, gridcolor: '#334155' },
+        yaxis2: { title: 'Taxa por 100 mil hab.', titlefont: { color: '#f97316' }, tickfont: { color: '#f97316' }, overlaying: 'y', side: 'right', showgrid: false },
+        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.12 }
+      };
+
+      Plotly.newPlot('chart-trend', [traceTotal, traceTaxa], layoutTrend, { responsive: true });
+    }
+
+    if (document.getElementById('chart-variation')) {
+      const anosVar = anos.slice(1);
+      const valsVar = difPct.slice(1);
+      const barColors = valsVar.map(v => v >= 0 ? '#f97316' : '#38bdf8');
+
+      const traceVar = {
+        x: anosVar,
+        y: valsVar,
+        type: 'bar',
+        marker: { color: barColors },
+        name: 'Variação Anual (%)'
+      };
+
+      const layoutVar = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 30, r: 30, b: 50, l: 65 },
+        xaxis: { title: 'Ano de Comparação', tickmode: 'linear', dtick: 1, gridcolor: '#334155' },
+        yaxis: { title: 'Variação Percentual (%)', gridcolor: '#334155', zeroline: true, zerolinecolor: '#ffffff', zerolinewidth: 1.5 }
+      };
+
+      Plotly.newPlot('chart-variation', [traceVar], layoutVar, { responsive: true });
+    }
+
+    if (document.getElementById('chart-rq3')) {
+      const traceScatter = {
+        x: popMilhoes,
+        y: totalJanAbr,
+        text: anos.map(a => 'Ano: ' + a),
+        mode: 'markers+text',
+        textposition: 'top center',
+        textfont: { color: '#cbd5e1', size: 10 },
+        name: 'Observações Anuais (2003–2022)',
+        type: 'scatter',
+        marker: {
+          size: 11,
+          color: anos.map(a => (a >= 2014 && a <= 2018) ? '#f97316' : '#38bdf8'),
+          line: { color: '#ffffff', width: 1 }
+        }
+      };
+
+      const xLine = [5.85, 6.82];
+      const yLine = xLine.map(x => -2768.91 * x + 23913.91);
+
+      const traceOLS = {
+        x: xLine,
+        y: yLine,
+        mode: 'lines',
+        name: 'Regressão Linear OLS (r = -0,3742)',
+        line: { color: '#f97316', width: 2.5, dash: 'dash' }
+      };
+
+      const layoutRQ3 = {
+        paper_bgcolor: '#162032',
+        plot_bgcolor: '#162032',
+        font: { color: '#ffffff', family: 'Inter, sans-serif' },
+        margin: { t: 40, r: 35, b: 55, l: 65 },
+        xaxis: { title: 'População Projetada no MRJ (Milhões de Habitantes)', gridcolor: '#334155' },
+        yaxis: { title: 'Total de Roubos (1º Quadrimestre)', gridcolor: '#334155' },
+        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.12 }
+      };
+
+      Plotly.newPlot('chart-rq3', [traceScatter, traceOLS], layoutRQ3, { responsive: true });
+    }
+  </script>
+
+</body>
+</html>

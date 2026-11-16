@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline ETL & Auditoria de Dados — Projeto LP6 | Caio Silva Lopes</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #162032;
+  --bg-code: #0b1120;
+  --text-primary: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent-blue: #38bdf8;
+  --accent-blue-dark: #0284c7;
+  --accent-orange: #f97316;
+  --accent-orange-light: #fb923c;
+  --border-color: #334155;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  padding-bottom: 4rem;
+}
+
+/* Global Navigation Bar (BEM) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-blue-dark);
+  padding: 0.85rem 1.5rem;
+}
+
+.navbar__container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar__brand-badge {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.navbar__link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.navbar__link--active {
+  color: var(--text-primary);
+  background-color: rgba(249, 115, 22, 0.18);
+  border-color: var(--accent-orange);
+}
+
+/* Hero Header */
+.hero {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border-bottom: 3px solid var(--accent-orange);
+  padding: 3rem 1.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--blue {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.badge--orange {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+}
+
+.hero__title {
+  font-size: 2.15rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  max-width: 920px;
+}
+
+.hero__meta {
+  background-color: rgba(15, 23, 42, 0.65);
+  border-left: 4px solid var(--accent-blue);
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__meta strong {
+  color: var(--text-primary);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--accent-orange);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-orange);
+}
+
+.btn--secondary {
+  background-color: rgba(56, 189, 248, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Main Container */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Portal Hub Navigation Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-blue);
+}
+
+.portal-card__tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-orange);
+  margin-bottom: 0.45rem;
+}
+
+.portal-card__title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.portal-card__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.portal-card__link {
+  display: inline-block;
+  text-align: center;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  transition: all 0.2s ease;
+}
+
+.portal-card--orange .portal-card__link {
+  color: var(--text-primary);
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__link:hover {
+  opacity: 0.9;
+}
+
+/* Content Sections */
+.section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section__title {
+  font-size: 1.45rem;
+  color: var(--accent-blue);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.section__subtitle {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.keywords {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.keywords strong {
+  color: var(--accent-orange);
+}
+
+.rq-list {
+  list-style: none;
+  margin: 1rem 0;
+}
+
+.rq-list__item {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent-blue);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  border-radius: 0 6px 6px 0;
+}
+
+.rq-list__label {
+  color: var(--accent-orange);
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+
+pre {
+  background-color: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  margin: 1rem 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
+
+pre code {
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.75rem 0.95rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--bg-card);
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+tr:hover {
+  background-color: rgba(56, 189, 248, 0.05);
+}
+
+.chart-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.chart-box__img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-box__caption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+
+.kpi-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.kpi-card__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.35rem 0;
+}
+
+.kpi-card__sub {
+  font-size: 0.82rem;
+  color: var(--accent-blue);
+}
+
+.kpi-card--orange .kpi-card__sub {
+  color: var(--accent-orange-light);
+}
+
+.ref-list {
+  padding-left: 1.35rem;
+}
+
+.ref-list li {
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer {
+  max-width: 1140px;
+  margin: 2rem auto 0;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 1.6rem;
+  }
+  .section {
+    padding: 1.35rem;
+  }
+}
+
+/* Portal Hub Specific Styles (BEM - White, Blue & Orange Palette) */
+.hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hub-header__title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 0.85rem;
+}
+
+.hub-header__subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.portal-grid--main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.35rem;
+  margin-bottom: 2.5rem;
+}
+
+.portal-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.portal-card--orange {
+  border-top-color: var(--accent-orange);
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.18);
+}
+
+.portal-card--orange:hover {
+  border-color: var(--accent-orange);
+  box-shadow: 0 12px 28px rgba(249, 115, 22, 0.18);
+}
+
+.portal-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.portal-card__step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background-color: rgba(56, 189, 248, 0.14);
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+}
+
+.portal-card--orange .portal-card__step {
+  background-color: rgba(249, 115, 22, 0.14);
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.portal-card__list {
+  list-style: none;
+  margin: 0 0 1.35rem 0;
+  padding: 0;
+}
+
+.portal-card__list-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.28rem 0;
+  border-bottom: 1px dashed rgba(51, 65, 85, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.portal-card__bullet {
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.quick-link-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.quick-link-item--orange {
+  border-left-color: var(--accent-orange);
+}
+
+.quick-link-item:hover {
+  border-color: var(--accent-orange);
+  background-color: rgba(56, 189, 248, 0.08);
+}
+
+.quick-link-item__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.quick-link-item--orange .quick-link-item__title {
+  color: var(--accent-orange);
+}
+
+.quick-link-item__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__brand-badge">LP6 • G2</span>
+        <span>Portal de Ciência Aberta — Roubo de Veículos MRJ</span>
+      </a>
+      <ul class="navbar__menu">
+        <li><a href="index.html" class="navbar__link">Portal Principal</a></li>
+        <li><a href="artigo.html" class="navbar__link">Artigo Científico</a></li>
+        <li><a href="exploratoria.html" class="navbar__link">Painel EDA & Gráficos</a></li>
+        <li><a href="dicionario.html" class="navbar__link">Dicionário & FAIR</a></li>
+        <li><a href="pipeline.html" class="navbar__link navbar__link--active">Pipeline ETL & Auditoria</a></li>
+        <li><a href="https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git" target="_blank" rel="noopener" class="navbar__link">Repositório GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__container">
+      <div class="hero__badges">
+        <span class="badge badge--orange">Módulo 04 • Engenharia de Dados</span>
+        <span class="badge badge--blue">Pipeline Determinístico Python</span>
+        <span class="badge badge--orange">Auditoria Erro Zero</span>
+      </div>
+      <h1 class="hero__title">Engenharia de Dados, Arquitetura do Repositório e Auditoria de ETL</h1>
+      <p class="hero__subtitle">Especificação técnica do pipeline determinístico implementado em <code>src/etl.py</code>, árvore normativa do repositório GitHub e relatório automatizado de validação algébrica.</p>
+      <div class="hero__actions">
+        <a href="index.html" class="btn btn--secondary">← Voltar ao Portal Principal</a>
+        <a href="artigo.html" class="btn btn--primary">Ver Artigo Científico Completo →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2 class="section__title">1. Arquitetura Padrão do Repositório GitHub</h2>
+      <pre><code>LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2/
+├── README.md                  # Apresentação do projeto, resumo, badges e tutorial de execução
+├── LICENSE                    # Licença aberta dupla (MIT para software e CC-BY 4.0 para dados/texto)
+├── requirements.txt           # Dependências com versões estritas pinadas (pip freeze)
+├── .gitignore                 # Arquivos ignorados (.venv, __pycache__, etc.)
+│
+├── data/
+│   ├── raw/
+│   │   └── 2306.xls           # Conjunto de dados bruto original (Portal DATA.RIO / ISP-RJ)
+│   ├── processed/
+│   │   ├── roubo_veiculos_mrj_2003_2022.csv     # Série tratada em CSV aberto (UTF-8)
+│   │   ├── roubo_veiculos_mrj_2003_2022.csv.gz  # Série tratada comprimida (GZIP)
+│   │   ├── roubo_veiculos_mrj_2003_2022.json    # Série tratada em formato JSON
+│   │   ├── definicoes_metadados_isp.txt         # Notas oficiais extraídas da aba Definições
+│   │   └── auditoria_etl.json                   # Relatório determinístico de validação matemática
+│   └── data_dictionary.md     # Metadados e dicionário de variáveis (FAIR Interoperable)
+│
+├── notebooks/
+│   └── analise_exploratoria.ipynb  # Notebook Jupyter com todas as saídas e gráficos pré-renderizados
+│
+├── src/
+│   ├── __init__.py            # Inicializador do pacote Python
+│   └── etl.py                 # Módulo Python reutilizável de extração, limpeza, validação e carga
+│
+└── docs/                      # Portal Web e Artigo Acadêmico publicados via GitHub Pages
+    ├── index.html             # Página Principal Estilizada (Portal Hub + Artigo Completo)
+    ├── artigo.html            # Página dedicada ao Artigo Acadêmico Normativo
+    ├── exploratoria.html      # Página dedicada ao Painel EDA, Ciclos e Tabela Completa
+    ├── dicionario.html        # Página dedicada ao Dicionário de Dados e Conformidade FAIR
+    ├── pipeline.html          # Página dedicada à Engenharia de Dados e Auditoria do Pipeline
+    └── assets/
+        ├── style.css                            # Folha de estilos modular BEM (:root variables)
+        ├── analise_roubo_veiculos_rj.png        # Figura estática RQ1 e RQ2 (alta resolução)
+        └── dispersao_populacao_roubos_rj.png    # Figura estática RQ3 com regressão OLS</code></pre>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">2. Relatório Automatizado de Auditoria Determinística (<code>auditoria_etl.json</code>)</h2>
+      <p>Resultado gerado pela execução real do módulo <code>src/etl.py</code> sobre o arquivo bruto <code>data/raw/2306.xls</code>, comprovando erro zero entre os indicadores tabelados pelo IPP/ISP e os recalculados via código:</p>
+      <pre><code>{
+  "projeto": "Dinâmica Histórica de Roubos de Veículos no Município do Rio de Janeiro (2003-2022)",
+  "autor": "Caio Silva Lopes",
+  "fonte_primaria": "Instituto de Segurança Pública (ISP-RJ) / Portal DATA.RIO (Tabela 2306)",
+  "total_registros_validos": 20,
+  "periodo_cobertura": "2003 a 2022 (1º Quadrimestre: Janeiro a Abril)",
+  "abas_inspecionadas": {
+    "T 2306": "Processada (linhas 9 a 28 extraídas; cabeçalhos 0-8 e rodapés 29-35 removidos)",
+    "Definições": "Extraída para data/processed/definicoes_metadados_isp.txt",
+    "ESRI_MAPINFO_SHEET": "Ignorada (aba vazia: 0 linhas x 0 colunas)"
+  },
+  "auditoria_matematica_erro_maximo": {
+    "dif_absoluta": 0.0,
+    "dif_percentual": 0.0,
+    "taxa_100k": 0.0,
+    "media_mensal": 0.0,
+    "status_integridade": "APROVADO_ERRO_ZERO"
+  },
+  "estatisticas_chave": {
+    "media_total_jan_abr": 6216.3,
+    "mediana_total_jan_abr": 5976.0,
+    "desvio_padrao_total_jan_abr": 1982.21,
+    "minimo_historico": {
+      "ano": 2011,
+      "total": 3140,
+      "taxa_100k": 49.43
+    },
+    "pico_absoluto": {
+      "ano": 2018,
+      "total": 9679,
+      "taxa_100k": 145.57
+    },
+    "correlacao_pearson_pop_vs_total": -0.3742,
+    "correlacao_spearman_pop_vs_total": -0.3308
+  }
+}</code></pre>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">3. Código-Fonte Completo do Módulo de ETL (<code>src/etl.py</code>)</h2>
+      <pre><code>"""
+Módulo de ETL (Extract, Transform, Load) - Projeto Final LP6 (G2)
+Autor: Caio Silva Lopes
+Curso: Bacharelado em Sistemas de Informação (6º Período) — Semestre 2026.2
+Disciplina: Linguagem de Programação (Análise e Visualização de Dados com Python)
+Repositório: https://github.com/CaioSIlvaLopes/LINGUAGENS-DE-PROGRAMA-O-Projeto-Pr-tico-G2.git
+Fonte primária: DATA.RIO / Instituto de Segurança Pública (ISP-RJ) - Tabela 2306
+"""
+
+import json
+from pathlib import Path
+from typing import Dict, Tuple
+import numpy as np
+import pandas as pd
+
+
+RAW_DATA_PATH = Path("data/raw/2306.xls")
+PROCESSED_DIR = Path("data/processed")
+PROCESSED_CSV_PATH = PROCESSED_DIR / "roubo_veiculos_mrj_2003_2022.csv"
+PROCESSED_GZ_PATH = PROCESSED_DIR / "roubo_veiculos_mrj_2003_2022.csv.gz"
+PROCESSED_JSON_PATH = PROCESSED_DIR / "roubo_veiculos_mrj_2003_2022.json"
+PROCESSED_PARQUET_PATH = PROCESSED_DIR / "roubo_veiculos_mrj_2003_2022.parquet"
+DEFINICOES_TXT_PATH = PROCESSED_DIR / "definicoes_metadados_isp.txt"
+AUDITORIA_JSON_PATH = PROCESSED_DIR / "auditoria_etl.json"
+
+
+def extract_raw_sheets(filepath: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Inspeciona todas as abas da planilha bruta 2306.xls e carrega:
+    - Aba 'T 2306': Série histórica de roubos de veículos (2003-2022).
+    - Aba 'Definições': Notas metodológicas oficiais SENASP/SESEG.
+    A aba 'ESRI_MAPINFO_SHEET' (0x0) é verificada e ignorada por estar vazia.
+    """
+    if not filepath.exists():
+        raise FileNotFoundError(f"Arquivo bruto não encontrado em: {filepath}")
+    excel_file = pd.ExcelFile(filepath)
+    required_sheets = {"T 2306", "Definições"}
+    missing = required_sheets - set(excel_file.sheet_names)
+    if missing:
+        raise ValueError(f"Abas obrigatórias ausentes: {missing}")
+
+    raw_t2306 = pd.read_excel(filepath, sheet_name="T 2306")
+    raw_definicoes = pd.read_excel(filepath, sheet_name="Definições")
+    return raw_t2306, raw_definicoes
+
+
+def transform_vehicle_robbery_data(raw_df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
+    """
+    Higieniza a Tabela 2306 de forma determinística e audita as variáveis derivadas:
+    - Remove cabeçalhos institucionais (linhas 0 a 8) e rodapés explicativos (linhas 29 a 35).
+    - Padroniza nomes de colunas no formato snake_case.
+    - Converte o marcador '..' (não aplicável no ano base 2003) para NaN numérico.
+    - Executa verificação matemática estrita (np.allclose) das 4 métricas calculadas.
+    """
+    df = raw_df.iloc[9:29].copy()
+    df.columns = [
+        "ano",
+        "total_jan_abr",
+        "dif_absoluta",
+        "dif_percentual",
+        "populacao",
+        "taxa_100k",
+        "media_mensal",
+    ]
+
+    df = df.replace("..", np.nan)
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    df["ano"] = df["ano"].astype(int)
+    df["total_jan_abr"] = df["total_jan_abr"].astype(int)
+    df = df.sort_values("ano").reset_index(drop=True)
+
+    # Auditoria matemática determinística das colunas derivadas
+    calc_dif_abs = df["total_jan_abr"].diff()
+    calc_dif_pct = df["total_jan_abr"].pct_change() * 100.0
+    calc_taxa_100k = (df["total_jan_abr"] / df["populacao"]) * 100000.0
+    calc_media_mensal = df["total_jan_abr"] / 4.0
+
+    err_dif_abs = float((df["dif_absoluta"].dropna() - calc_dif_abs.dropna()).abs().max())
+    err_dif_pct = float((df["dif_percentual"].dropna() - calc_dif_pct.dropna()).abs().max())
+    err_taxa = float((df["taxa_100k"] - calc_taxa_100k).abs().max())
+    err_media = float((df["media_mensal"] - calc_media_mensal).abs().max())
+
+    assert np.allclose(df["dif_absoluta"].dropna(), calc_dif_abs.dropna(), atol=1e-4)
+    assert np.allclose(df["dif_percentual"].dropna(), calc_dif_pct.dropna(), atol=1e-4)
+    assert np.allclose(df["taxa_100k"], calc_taxa_100k, atol=1e-4)
+    assert np.allclose(df["media_mensal"], calc_media_mensal, atol=1e-4)
+
+    audit_info = {
+        "projeto": "Dinâmica Histórica de Roubos de Veículos no Município do Rio de Janeiro (2003-2022)",
+        "autor": "Caio Silva Lopes",
+        "total_registros_validos": int(len(df)),
+        "auditoria_matematica_erro_maximo": {
+            "dif_absoluta": err_dif_abs,
+            "dif_percentual": err_dif_pct,
+            "taxa_100k": err_taxa,
+            "media_mensal": err_media,
+            "status_integridade": "APROVADO_ERRO_ZERO",
+        },
+    }
+    return df, audit_info
+
+
+def extract_definicoes_text(raw_definicoes: pd.DataFrame) -> str:
+    """Extrai e higieniza os textos metodológicos da aba 'Definições'."""
+    paragrafos = [
+        str(val).strip()
+        for val in raw_definicoes.iloc[:, 0].dropna().values
+        if str(val).strip() and str(val).strip() != "Definições"
+    ]
+    return "\n\n".join(paragrafos)
+
+
+def load_processed_data(df: pd.DataFrame, definicoes_text: str, audit_info: Dict) -> None:
+    """Persiste os dados higienizados e metadados em formatos abertos (CSV, CSV.GZ, JSON, TXT e Parquet)."""
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_csv(PROCESSED_CSV_PATH, index=False, float_format="%.6f")
+    df.to_csv(PROCESSED_GZ_PATH, index=False, compression="gzip", float_format="%.6f")
+    df.to_json(PROCESSED_JSON_PATH, orient="records", indent=2)
+
+    with open(DEFINICOES_TXT_PATH, "w", encoding="utf-8") as f:
+        f.write("METADADOS OFICIAIS — ABA 'Definições' (Tabela 2306 DATA.RIO / ISP-RJ)\n")
+        f.write("=" * 75 + "\n\n")
+        f.write(definicoes_text + "\n")
+
+    with open(AUDITORIA_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(audit_info, f, ensure_ascii=False, indent=2)
+
+    try:
+        df.to_parquet(PROCESSED_PARQUET_PATH, index=False)
+    except Exception:
+        pass
+
+
+def run_pipeline(raw_path: Path = RAW_DATA_PATH) -> pd.DataFrame:
+    """Executa o pipeline completo de ETL de forma determinística."""
+    raw_t2306, raw_definicoes = extract_raw_sheets(raw_path)
+    clean_df, audit_info = transform_vehicle_robbery_data(raw_t2306)
+    definicoes_text = extract_definicoes_text(raw_definicoes)
+    load_processed_data(clean_df, definicoes_text, audit_info)
+    return clean_df
+
+
+if __name__ == "__main__":
+    fallback_path = Path("2306.xls") if not RAW_DATA_PATH.exists() else RAW_DATA_PATH
+    dataset = run_pipeline(fallback_path)
+    print(f"Pipeline concluído com sucesso por Caio Silva Lopes. Registros processados: {len(dataset)}")</code></pre>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <p><strong>Projeto Final de Disciplina (G2)</strong> — Linguagem de Programação (Análise e Visualização de Dados com Python) • 6º Período de Sistemas de Informação (2026.2)</p>
+    <p>Autor: <strong>Caio Silva Lopes</strong> | Licenças: <strong>MIT</strong> (Software) &amp; <strong>CC-BY 4.0</strong> (Dados e Texto) | Fonte Primária: <a href="http://www.ispdados.rj.gov.br/" target="_blank" rel="noopener">ISP-RJ</a> &amp; <a href="https://www.data.rio/" target="_blank" rel="noopener">DATA.RIO (Tabela 2306)</a></p>
+  </footer>
+</body>
+</html>

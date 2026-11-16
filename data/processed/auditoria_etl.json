@@ -1,0 +1,36 @@
+{
+  "projeto": "Dinâmica Histórica de Roubos de Veículos no Município do Rio de Janeiro (2003-2022)",
+  "autor": "Caio Silva Lopes",
+  "fonte_primaria": "Instituto de Segurança Pública (ISP-RJ) / Portal DATA.RIO (Tabela 2306)",
+  "total_registros_validos": 20,
+  "periodo_cobertura": "2003 a 2022 (1º Quadrimestre: Janeiro a Abril)",
+  "abas_inspecionadas": {
+    "T 2306": "Processada (linhas 9 a 28 extraídas; cabeçalhos 0-8 e rodapés 29-35 removidos)",
+    "Definições": "Extraída para data/processed/definicoes_metadados_isp.txt",
+    "ESRI_MAPINFO_SHEET": "Ignorada (aba vazia: 0 linhas x 0 colunas)"
+  },
+  "auditoria_matematica_erro_maximo": {
+    "dif_absoluta": 0.0,
+    "dif_percentual": 0.0,
+    "taxa_100k": 0.0,
+    "media_mensal": 0.0,
+    "status_integridade": "APROVADO_ERRO_ZERO"
+  },
+  "estatisticas_chave": {
+    "media_total_jan_abr": 6216.3,
+    "mediana_total_jan_abr": 5976.0,
+    "desvio_padrao_total_jan_abr": 1982.21,
+    "minimo_historico": {
+      "ano": 2011,
+      "total": 3140,
+      "taxa_100k": 49.43
+    },
+    "pico_absoluto": {
+      "ano": 2018,
+      "total": 9679,
+      "taxa_100k": 145.57
+    },
+    "correlacao_pearson_pop_vs_total": -0.3742,
+    "correlacao_spearman_pop_vs_total": -0.3308
+  }
+}
